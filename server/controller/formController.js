@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/users");
 const Form = require("../models/forms");
-
+const url = require("url");
 // @desc    create form
 // @route   get /api/forms
 // @access  Private
@@ -27,19 +27,42 @@ const createForm = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    update form
+// @desc    get forms
 // @route   get /api/forms
 // @access  Private
 
-const updateForm = asyncHandler(async (req, res) => {
-  // const { _id } = url.parse(req.url, true).query;
-  const { _id, name, description, questions } = req.body;
+const getFormDetails = asyncHandler(async (req, res) => {
+  // const { _id, creator_id } = req.body;
+  const { _id, creator_id } = url.parse(req.url, true).query;
   const form = await Form.findOne({ _id });
 
   if (form) {
-    form.name = name;
-    form.description = description;
-    form.questions = questions;
+    if (form.createdBy == creator_id) {
+      res.status(200).json({
+        form,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Not Authorised");
+    }
+  } else {
+    res.status(400);
+    throw new Error("form Not found");
+  }
+});
+
+// @desc    update form
+// @route   get /api/forms/update
+// @access  Private
+
+const updateForm = asyncHandler(async (req, res) => {
+  const data = req.body;
+  const form = await Form.findOne({ _id: data._id });
+
+  if (form) {
+    form.name = data.name;
+    form.description = data.description;
+    form.questions = data.questions;
     const updatedForm = await form.save();
 
     res.status(200).json({
@@ -51,4 +74,4 @@ const updateForm = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createForm, updateForm };
+module.exports = { createForm, updateForm, getFormDetails };

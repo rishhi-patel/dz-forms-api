@@ -131,7 +131,7 @@ const getSingleResponse = asyncHandler(async (req, res) => {
   const response = await Response.findOne({ _id });
 
   if (response) {
-    res.status(201).json({
+    res.status(200).json({
       response,
     });
   } else {
@@ -150,7 +150,7 @@ const getSingleFormResponses = asyncHandler(async (req, res) => {
   const response = await Response.find({ formId: _id });
 
   if (response) {
-    res.status(201).json({
+    res.status(200).json({
       response,
     });
   } else {

@@ -27,7 +27,7 @@ const createForm = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    get forms
+// @desc    get form Details
 // @route   get /api/forms
 // @access  Private
 
@@ -51,6 +51,28 @@ const getFormDetails = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    get form Lists
+// @route   get /api/forms/find
+// @access  Private
+
+const getFormList = asyncHandler(async (req, res) => {
+  // const { _id, creator_id } = req.body;
+  const { _id } = url.parse(req.url, true).query;
+
+  const form = await Form.find(
+    { createdBy: _id },
+    { _id: 1, name: 1, createdBy: 1 }
+  );
+
+  if (form) {
+    res.status(200).json({
+      form,
+    });
+  } else {
+    res.status(400);
+    throw new Error("form Not found");
+  }
+});
 // @desc    update form
 // @route   get /api/forms/update
 // @access  Private
@@ -74,4 +96,4 @@ const updateForm = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createForm, updateForm, getFormDetails };
+module.exports = { createForm, updateForm, getFormList, getFormDetails };

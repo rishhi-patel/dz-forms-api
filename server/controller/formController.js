@@ -113,7 +113,7 @@ const submitResponse = asyncHandler(async (req, res) => {
     });
 
     res.status(201).json({
-      response,
+      status: "success",
     });
   } else {
     res.status(400);

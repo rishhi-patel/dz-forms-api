@@ -34,18 +34,13 @@ const createForm = asyncHandler(async (req, res) => {
 
 const getFormDetails = asyncHandler(async (req, res) => {
   // const { _id, creator_id } = req.body;
-  const { _id, creator_id } = url.parse(req.url, true).query;
+  const { _id } = url.parse(req.url, true).query;
   const form = await Form.findOne({ _id });
 
   if (form) {
-    if (form.createdBy == creator_id) {
-      res.status(200).json({
-        form,
-      });
-    } else {
-      res.status(400);
-      throw new Error("Not Authorised");
-    }
+    res.status(200).json({
+      form,
+    });
   } else {
     res.status(400);
     throw new Error("form Not found");

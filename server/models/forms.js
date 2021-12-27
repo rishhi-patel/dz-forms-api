@@ -20,6 +20,10 @@ var FormSchema = new mongoose.Schema(
           type: String,
           default: "",
         },
+        required: {
+          type: Boolean,
+          default: false,
+        },
         questionText: String,
         options: [
           {

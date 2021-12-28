@@ -16,6 +16,6 @@ JWT_SECRET = 'abc123'
 
 
 
-### you can use  these commands for running backend and frontend separately (all of these commands are mentioned in package.json)
+### you can use these commands to run backend (all of these commands are mentioned in package.json)
 ### npm install 
 ### npm run start 
